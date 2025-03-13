@@ -1,51 +1,90 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const WeDo = () => {
+  const [ref, inView] = useInView({
+    threshold: 0.2,
+    triggerOnce: true,
+  });
+
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        damping: 15,
+        stiffness: 100,
+      },
+    },
+  };
+
   return (
-    <div className="w-full bg-gradient-to-b from-[#043148] to-[#033047] py-12">
-      <div className="max-w-6xl mx-auto px-6 text-center">
+    <motion.div
+      ref={ref}
+      className="w-full bg-gradient-to-b from-[#043148] to-[#033047] py-24"
+      variants={containerVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+    >
+      <div className="max-w-6xl mx-auto px-6">
         <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-3xl font-semibold text-white mb-6"
+          variants={itemVariants}
+          className="text-5xl font-bold text-white mb-16 text-center"
         >
-          What We Do <span className="text-gray-300">-</span>
+          What We <span className="text-red-500">Do</span>
         </motion.h2>
-        <div className="flex flex-col md:flex-row h-80 items-center gap-8">
+
+        <div className="grid md:grid-cols-2 gap-12">
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="md:w-3/5 p-6 bg-white/10 backdrop-blur-lg h-80 rounded-lg shadow-lg"
+            variants={itemVariants}
+            className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
-            <p className="text-white text-lg leading-relaxed">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae,
-              odit minus. Facilis odio optio sint, accusantium harum sit,
-              repellendus ex autem nostrum asperiores debitis quae, neque
-              ducimus aliquam. Rem eveniet sapiente voluptatum aperiam!
+            <h3 className="text-2xl font-semibold text-white mb-4">
+              Our Approach
+            </h3>
+            <p className="text-white/80 leading-relaxed">
+            We create engaging reels and videos that help businesses capture attention, boost brand awareness, and drive customer engagement. In today’s fast-paced digital world, standing out is essential, and visually compelling content is the key to making a lasting impression. Our videos not only showcase your products but also spark conversations, encourage interactions, and turn viewers into loyal customers.
+<br />
+<br />  
+By understanding your brand’s vision and target audience, we craft high-quality, trend-driven content that resonates with potential buyers. Using creative storytelling, eye-catching visuals, and strategic messaging, we ensure your brand reaches the right people and leaves a lasting impact. Let’s elevate your business with content that engages, inspires, and converts!
             </p>
           </motion.div>
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-            className="md:w-2/5 relative"
+            variants={itemVariants}
+            className="relative overflow-hidden rounded-2xl"
+            style={{ scale }}
           >
-            <img
+            <motion.img
               src="https://cdn.pixabay.com/photo/2024/01/07/10/56/belem-tower-8492812_1280.jpg"
-              className="w-full h-80 object-cover rounded-lg shadow-lg"
+              className="w-full h-[400px] object-cover"
               alt="What we do"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.6 }}
             />
-            <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
