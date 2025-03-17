@@ -9,13 +9,13 @@ module.exports = {
       fontFamily: {
         cinzel: ['Cinzel', 'serif'], 
         bigShoulders: ['Big Shoulders Stencil', 'sans-serif'],
-        Satisfy:['Satisfy','sans-serif'],
-        Tajawal:['Tajawal','sans-serif'],
-        Chakra :["Chakra Petch", "sans-serif"]
+        Satisfy: ['Satisfy', 'sans-serif'],
+        Tajawal: ['Tajawal', 'sans-serif'],
+        Chakra: ["Chakra Petch", "sans-serif"],
       },
       animation: {
-        shake: 'shake 10s ease-in-out infinite', // Shake animation
-        shuffle: 'shuffle 3s infinite', // Shuffle animation
+        shake: 'shake 10s ease-in-out infinite', 
+        shuffle: 'shuffle 3s infinite',
       },
       keyframes: {
         shake: {

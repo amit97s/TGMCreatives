@@ -100,6 +100,7 @@ const Header = () => {
                   className="text-8xl md:text-9xl font-extrabold text-white"
                   whileHover={{
                     scale: 1.05,
+                    marginLeft:"30px",
                     transition: { duration: 0.2 }
                   }}
                 >

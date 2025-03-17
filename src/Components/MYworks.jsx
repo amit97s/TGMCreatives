@@ -24,7 +24,7 @@ const MyWorks = () => {
 
   const myWorkVideo = [
     {
-      poster: "https://i.pinimg.com/736x/f7/ab/10/f7ab1029e853d6ae40d3d9d8f1a436a2.jpg",
+      poster: "https://i.pinimg.com/474x/27/0c/e7/270ce709a1e03746e6d0beb7e21e1bb8.jpg",
       title: "Apparel",
       videosPopUp: [
         "https://res.cloudinary.com/do3vcfcdx/video/upload/v1741090228/PHULKAARI_1_z6pr3a.mp4",
@@ -65,7 +65,7 @@ const MyWorks = () => {
       ],
     },
     {
-      poster: "https://i.pinimg.com/474x/3e/11/a4/3e11a4886da6088e969644225ecd07d7.jpg",
+      poster: "https://i.pinimg.com/474x/06/6d/04/066d048947e5bffc0a90da830f58ffc3.jpg",
       title: "Cars",
       videosPopUp: [
         "https://res.cloudinary.com/do3vcfcdx/video/upload/v1741090053/Bentley__1_mnexrw.mp4",
