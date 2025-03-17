@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -21,7 +21,7 @@ const Brands = () => {
     "https://i.pinimg.com/474x/eb/8d/ec/eb8decd2551e45925a3366624a00aaa0.jpg",
   ];
 
-  const settingsLeft = {
+  const settings = {
     infinite: true,
     speed: 5000,
     slidesToShow: 5,
@@ -29,115 +29,94 @@ const Brands = () => {
     autoplay: true,
     autoplaySpeed: 0,
     cssEase: "linear",
-    rtl: false,
     responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
+      { breakpoint: 1024, settings: { slidesToShow: 3 } },
+      { breakpoint: 600, settings: { slidesToShow: 2 } },
     ],
   };
 
-  const settingsRight = {
-    ...settingsLeft,
-    rtl: true,
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        damping: 12,
-      },
-    },
-  };
+  const stats = [
+    { value: 150, label: "Brands", description: "Collaborated with over 150 brands." },
+    { value: 23, label: "Countries", description: "Working across many markets internationally." },
+    { value: 12, label: "Network", description: "Spanning a dozen key capitals." },
+    { value: 10, label: "Years of Expertise", description: "A decade of impactful results." },
+  ];
 
   return (
-    <motion.div
-      className="w-full bg-gradient-to-b from-[#033047] to-[#021f2d] py-24"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      <motion.h2
-        className="text-4xl font-bold text-white text-center mb-16"
-        variants={itemVariants}
-      >
+    <motion.div className="w-full bg-gradient-to-b from-[#033047] to-[#021f2d] py-24">
+      <motion.h2 className="text-4xl font-bold text-white text-center mb-16">
         Trusted by <span className="text-red-500">Leading Brands</span>
       </motion.h2>
 
       <div className="space-y-12">
-        <motion.div
-          className="overflow-hidden"
-          variants={itemVariants}
-        >
-          <Slider {...settingsLeft}>
+        <div className="overflow-hidden">
+          <Slider {...settings}>
             {brandsLeft.map((item, index) => (
-              <motion.div
-                key={index}
-                className="px-4"
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="bg-white/10 backdrop-blur-lg overflow-hidden rounded-xl">
-                  <img
-                    src={item}
-                    alt="brand"
-                    className="w-full h-44 object-cover "
-                  />
-                </div>
-              </motion.div>
+              <div key={index} className="px-1.5"> {/* Adjust spacing */}
+                <img
+                  src={item}
+                  alt="brand"
+                  className="w-full h-44 object-cover rounded-2xl"
+                  style={{ marginRight: "10px" }} // Additional margin support
+                />
+              </div>
             ))}
           </Slider>
-        </motion.div>
-
-        <motion.div
-          className="overflow-hidden"
-          variants={itemVariants}
-        >
-          <Slider {...settingsRight}>
+        </div>
+        <div className="overflow-hidden">
+          <Slider {...settings} rtl>
             {brandsRight.map((item, index) => (
-              <motion.div
-                key={index}
-                className="px-4"
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="bg-white/10 backdrop-blur-lg overflow-hidden  rounded-xl">
-                  <img
-                    src={item}
-                    alt="brand"
-                    className="w-full h-44 object-cover"
-                  />
-                </div>
-              </motion.div>
+              <div key={index} className="px-1.5"> {/* Adjust spacing */}
+                <img
+                  src={item}
+                  alt="brand"
+                  className="w-full h-44 object-cover rounded-2xl"
+                  style={{ marginRight: "10px" }} // Additional margin support
+                />
+              </div>
             ))}
           </Slider>
-        </motion.div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="grid grid-cols-1 md:grid-cols-4 text-center mt-20 px-10 gap-10 text-white">
+        {stats.map((stat, index) => (
+          <motion.div key={index} className="space-y-2">
+            <Counter target={stat.value} />
+            <h3 className="text-lg font-bold">{stat.label}</h3>
+            <p className="text-sm text-gray-300">{stat.description}</p>
+          </motion.div>
+        ))}
       </div>
     </motion.div>
+  );
+};
+
+const Counter = ({ target }) => {
+  const [count, setCount] = useState(0);
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      let start = 0;
+      const increment = Math.ceil(target / 50);
+      const interval = setInterval(() => {
+        start += increment;
+        if (start >= target) {
+          start = target;
+          clearInterval(interval);
+        }
+        setCount(start);
+      }, 30);
+    }
+  }, [isInView, target]);
+
+  return (
+    <h2 ref={ref} className="text-5xl font-bold">
+      {count}+
+    </h2>
   );
 };
 
